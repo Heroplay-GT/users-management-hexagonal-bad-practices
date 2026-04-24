@@ -5,6 +5,7 @@ import com.jcaa.usersmanagement.application.port.out.GetAllUsersPort;
 import com.jcaa.usersmanagement.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public final class GetAllUsersService implements GetAllUsersUseCase {
     //   ¿null significa "ocurrió un error" o "no hay usuarios"?
     // Solución: retornar Collections.emptyList() cuando no hay usuarios.
     if (users.isEmpty()) {
-      return null;
+      return Collections.emptyList();
     }
     return users;
   }
