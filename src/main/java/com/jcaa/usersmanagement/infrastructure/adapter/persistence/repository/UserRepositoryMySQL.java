@@ -16,8 +16,6 @@ import com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper.UserPe
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
-// VIOLACIÓN Regla 4: import con wildcard (*) — se deben declarar imports específicos,
-// nunca usar comodines porque ocultan qué clases se están usando realmente.
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

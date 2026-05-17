@@ -9,8 +9,6 @@ public final class ConfigurationException extends RuntimeException {
   }
 
   public static ConfigurationException becauseLoadFailed(final Throwable cause) {
-    // VIOLACIÓN Regla 10: texto de error hardcodeado directamente.
-    // Debe usarse una constante con nombre descriptivo en lugar de un String literal.
     return new ConfigurationException(
         String.format(MESSAGE_LOAD_FAILED, cause.getMessage()), cause);
   }

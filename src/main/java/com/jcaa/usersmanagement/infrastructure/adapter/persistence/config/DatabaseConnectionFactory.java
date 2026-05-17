@@ -11,8 +11,7 @@ import java.sql.SQLException;
 public class DatabaseConnectionFactory {
 
   public static Connection createConnection(final DatabaseConfig config) {
-    // VIOLACIÓN Regla 4: método que no usa estado de instancia (solo usa el parámetro)
-    // pero NO está declarado como static. Debería ser static.
+    
     try {
       return DriverManager.getConnection(
           config.buildJdbcUrl(), config.username(), config.password());

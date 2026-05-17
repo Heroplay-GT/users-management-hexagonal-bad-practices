@@ -100,8 +100,6 @@ public final class DependencyContainer {
             properties.get(DB_NAME),
             properties.get(DB_USER),
             properties.get(DB_PASSWORD));
-    // VIOLACIÓN Regla 4 (consecuencia): DatabaseConnectionFactory ya no tiene @UtilityClass,
-    // por lo que debe instanciarse para llamar a createConnection.
     return DatabaseConnectionFactory.createConnection(config);
   }
 
