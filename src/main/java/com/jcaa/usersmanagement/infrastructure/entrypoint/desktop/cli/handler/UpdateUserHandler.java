@@ -17,7 +17,6 @@ public final class UpdateUserHandler implements OperationHandler {
 
   @Override
   public void handle() {
-    // VIOLACIÓN Regla 4: abreviaturas en nombres de variables ("pw" y "upd").
     // Los nombres deben ser claros y descriptivos, sin abreviaturas.
     final String id       = console.readRequired("User ID                                       : ");
     final String name     = console.readRequired("New name                                      : ");

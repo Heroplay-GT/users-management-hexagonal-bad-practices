@@ -9,7 +9,6 @@ public final class InvalidUserIdException extends DomainException {
   }
 
   public static InvalidUserIdException becauseValueIsEmpty() {
-    // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
     return new InvalidUserIdException(MESSAGE_EMPTY);
   }
 }

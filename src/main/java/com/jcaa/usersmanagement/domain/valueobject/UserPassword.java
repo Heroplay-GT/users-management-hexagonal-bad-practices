@@ -20,14 +20,12 @@ public final class UserPassword {
    * crea o cambia su contraseña.
    */
   public static UserPassword fromPlainText(final String plainText) {
-    // VIOLACIÓN Regla 4: se usa == null en lugar de Objects.isNull() o Objects.requireNonNull()
     if (Objects.isNull(plainText)) {
       throw new NullPointerException("Password cannot be null");
     }
     final String normalizedValue = plainText.trim();
     validateNotEmpty(normalizedValue);
     validateMinimumLength(normalizedValue);
-    // VIOLACIÓN Regla 10: magic number 12 — debería ser una constante BCRYPT_COST = 12
     final String hash = BCrypt.withDefaults().hashToString(BCRYPT_COST, normalizedValue.toCharArray());
     return new UserPassword(hash);
   }
@@ -72,7 +70,6 @@ public final class UserPassword {
   }
 
   private static void validateMinimumLength(final String normalizedValue) {
-    // VIOLACIÓN Regla 10: magic number 8 — debería ser una constante MINIMUM_LENGTH = 8
     if (normalizedValue.length() < MINIMUM_LENGTH) {
       throw InvalidUserPasswordException.becauseLengthIsTooShort(MINIMUM_LENGTH);
     }

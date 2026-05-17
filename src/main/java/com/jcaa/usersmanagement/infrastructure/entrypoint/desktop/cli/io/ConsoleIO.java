@@ -14,17 +14,11 @@ public final class ConsoleIO {
   private final PrintStream out;
 
   public String readRequired(final String prompt) {
-    // VIOLACIÓN Regla 4: nombre abreviado "v" en lugar del nombre descriptivo "value".
-    // Clean Code - Regla 24 (consistencia semántica):
-    // El mismo concepto —"entrada del usuario leída de consola"— se llama "v" aquí
-    // y "r" en readInt(), dentro de la misma clase. Nombres distintos para el mismo
-    // concepto hacen que el lector asuma incorrectamente que son ideas diferentes.
     String value;
     do {
       out.print(prompt);
       value = scanner.nextLine().trim();
       if (value.isBlank()) {
-        // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
         out.println(ERROR_BLANK_VALUE);
       }
     } while (value.isBlank());
@@ -39,12 +33,10 @@ public final class ConsoleIO {
   public int readInt(final String prompt) {
     while (true) {
       out.print(prompt);
-      // VIOLACIÓN Regla 4: nombre abreviado "r" en lugar del nombre descriptivo "rawInput".
       final String rawInput = scanner.nextLine().trim();
       try {
         return Integer.parseInt(rawInput);
       } catch (final NumberFormatException ignored) {
-        // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
         out.println(ERROR_INVALID_INT);
       }
     }
