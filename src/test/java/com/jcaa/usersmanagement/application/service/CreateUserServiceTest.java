@@ -20,13 +20,13 @@ import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-// VIOLACIÓN Regla 11: se eliminó @DisplayName de la clase y de los métodos.
-// Los tests deben tener nombres descriptivos con @DisplayName para documentar el comportamiento.
+@DisplayName("CreateUserService")
 @ExtendWith(MockitoExtension.class)
 class CreateUserServiceTest {
 
@@ -49,8 +49,7 @@ class CreateUserServiceTest {
   }
 
   @Test
-  // VIOLACIÓN Regla 11: no hay comentarios de estructura Arrange–Act–Assert.
-  // La regla exige que los bloques estén documentados con // Arrange, // Act, // Assert.
+  @DisplayName("Guarda y notifica cuando el email es nuevo")
   void shouldSaveUserAndNotifyWhenEmailIsNew() {
     final CreateUserCommand command =
         new CreateUserCommand("u-01", "John Arrieta", "john@example.com", "Pass1234", "ADMIN");
@@ -65,17 +64,15 @@ class CreateUserServiceTest {
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.empty());
     when(saveUserPort.save(any())).thenReturn(savedUser);
     final UserModel result = service.execute(command);
-    // VIOLACIÓN Regla 11: se usa assertTrue(x != null) en lugar de assertNotNull(x).
-    // La regla indica usar las últimas aserciones — assertNotNull es más expresivo y correcto.
-    assertTrue(result != null);
-    assertTrue(result.getId().value().equals("u-01"));
+    assertNotNull(result);
+    assertEquals("u-01", result.getId().value());
     verify(saveUserPort).save(any(UserModel.class));
     verify(emailNotificationService).notifyUserCreated(savedUser, "Pass1234");
   }
 
   @Test
+  @DisplayName("Lanza excepción cuando el email ya existe")
   void shouldThrowWhenEmailAlreadyExists() {
-    // VIOLACIÓN Regla 11: Arrange y Act–Assert mezclados sin separación ni comentarios AAA.
     final CreateUserCommand command =
         new CreateUserCommand("u-02", "Jane Doe", "jane@example.com", "Pass5678", "MEMBER");
     final UserModel existing =
@@ -93,6 +90,7 @@ class CreateUserServiceTest {
   }
 
   @Test
+  @DisplayName("Lanza ConstraintViolationException cuando el command es inválido")
   void shouldThrowWhenCommandIsInvalid() {
     final CreateUserCommand command =
         new CreateUserCommand("", "Jo", "not-an-email", "short", "ADMIN");

@@ -46,8 +46,6 @@ class LoginServiceTest {
   @Test
   @DisplayName("execute() retorna el usuario cuando las credenciales son correctas y está activo")
   void shouldReturnUserWhenCredentialsAreValidAndUserIsActive() {
-    // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
-    // La regla exige que cada bloque esté documentado con // Arrange, // Act, // Assert.
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
     final UserModel activeUser =
         new UserModel(
@@ -59,17 +57,14 @@ class LoginServiceTest {
             UserStatus.ACTIVE);
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(activeUser));
     final UserModel result = service.execute(command);
-    // VIOLACIÓN Regla 11: se usa assertTrue(result != null) en lugar de assertNotNull(result).
-    // La regla indica usar las aserciones correctas — assertNotNull es más expresivo.
-    assertTrue(result != null);
-    // VIOLACIÓN Regla 11: se usa assertTrue(result == activeUser) en lugar de assertSame(...).
-    assertTrue(result == activeUser);
+    assertNotNull(result);
+    assertSame(activeUser, result);
   }
 
   // ── email no registrado
 
-  // VIOLACIÓN Regla 11: falta @DisplayName — los tests deben documentar su comportamiento.
   @Test
+  @DisplayName("execute() lanza InvalidCredentialsException cuando el email no existe")
   void shouldThrowWhenEmailNotFound() {
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
 
@@ -78,8 +73,8 @@ class LoginServiceTest {
     assertThrows(InvalidCredentialsException.class, () -> service.execute(command));
   }
 
-  // VIOLACIÓN Regla 11: falta @DisplayName en el método.
   @Test
+  @DisplayName("execute() lanza InvalidCredentialsException cuando el password es incorrecto")
   void shouldThrowWhenPasswordIsWrong() {
     final LoginCommand command = new LoginCommand(EMAIL, "WrongPass99");
 
