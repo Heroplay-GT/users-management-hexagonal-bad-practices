@@ -25,15 +25,13 @@ public final class UserResponsePrinter {
   }
 
   public void printList(final List<UserResponse> users) {
-    // VIOLACIÓN Regla 5: si GetAllUsersService retorna null (lista vacía → null),
-    // esta llamada a users.isEmpty() lanza NullPointerException en tiempo de ejecución.
-    // Ningún método debe retornar null — se deben usar colecciones vacías.
-    if (users.isEmpty()) {
+    final List<UserResponse> safe = java.util.Objects.requireNonNullElseGet(users, java.util.Collections::emptyList);
+    if (safe.isEmpty()) {
       console.println("  No users found.");
       return;
     }
-    console.printf("%n  Total: %d user(s)%n", users.size());
-    users.forEach(this::print);
+    console.printf("%n  Total: %d user(s)%n", safe.size());
+    safe.forEach(this::print);
   }
 
   // Clean Code - Regla 27 (código listo para leer, no solo para compilar):
@@ -42,15 +40,16 @@ public final class UserResponsePrinter {
   // La implementación castiga al lector sin aportar ningún beneficio real.
   // Sin explicación oral del autor es imposible deducir su intención en segundos.
   public void printSummary(final List<UserResponse> users) {
-    Optional.ofNullable(users)
-        .filter(list -> !list.isEmpty())
-        .map(list -> list.stream()
-            .reduce(
-                new StringBuilder(),
-                (sb, u) -> sb.append(String.format("  %s (%s)%n", u.name(), getStatusLabel(u.status()))),
-                StringBuilder::append))
-        .map(StringBuilder::toString)
-        .ifPresentOrElse(console::println, () -> console.println("  No users found."));
+    final List<UserResponse> safe = java.util.Objects.requireNonNullElseGet(users, java.util.Collections::emptyList);
+    if (safe.isEmpty()) {
+      console.println("  No users found.");
+      return;
+    }
+    final StringBuilder sb = new StringBuilder();
+    for (final UserResponse u : safe) {
+      sb.append(String.format("  %s (%s)%n", u.name(), getStatusLabel(u.status())));
+    }
+    console.println(sb.toString());
   }
 
   // Clean Code - Regla 16 (evitar condicionales repetitivas cuando el polimorfismo aporta claridad):
